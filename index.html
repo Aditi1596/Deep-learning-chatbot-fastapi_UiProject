@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<div class="chat-container">
+    <h2>Deep Learning Chatbot</h2>
+
+    <div id="chat-box"></div>
+
+    <input type="text" id="user-input" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+function sendMessage() {
+    let text = document.getElementById("user-input").value;
+
+    document.getElementById("chat-box").innerHTML +=
+        `<p>You: ${text}</p>`;
+
+    fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: text})
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("chat-box").innerHTML +=
+            `<p>Bot: ${data.reply}</p>`;
+    });
+
+    document.getElementById("user-input").value = "";
+}
+</script>
+
+</body>
+</html>
+
